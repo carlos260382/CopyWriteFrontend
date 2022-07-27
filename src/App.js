@@ -8,10 +8,7 @@ function App() {
   const [input, setInput] = useState("");
   const [text, setText] = useState([]);
 
-  const API_BASE_URL =
-    "http://localhost:3001/apihost/iecho/" ||
-    "https://copywritebac.herokuapp.com/";
-
+  const API_BASE_URL = "http://localhost:3001/apihost/iecho/";
   const submitHandler = async () => {
     try {
       const { data } = await Axios.get(`${API_BASE_URL}${input}`, {
