@@ -7,8 +7,10 @@ import style from "./App.module.css";
 function App() {
   const [input, setInput] = useState("");
   const [text, setText] = useState([]);
+  const URL_DEPLOY = "https://copywritebac.herokuapp.com/apihost/iecho/";
+  const URL_DEVS = "http://localhost:3001/apihost/iecho/";
 
-  const API_BASE_URL = "https://copywritebac.herokuapp.com/apihost/iecho/";
+  const API_BASE_URL = URL_DEPLOY || URL_DEVS;
   const submitHandler = async () => {
     try {
       const { data } = await Axios.get(`${API_BASE_URL}${input}`, {
@@ -19,9 +21,8 @@ function App() {
         body: JSON.stringify(input),
       });
       if (data) setText(data);
-      console.log("lo que llega del backend", data);
     } catch (error) {
-      console.log("error de app", error);
+      console.log(error);
     }
   };
   const arrayText = [];
@@ -30,7 +31,6 @@ function App() {
     const array = text[key];
     arrayText.push(array);
   });
-  console.log("la URL", API_BASE_URL);
 
   return (
     <div className={style.container}>
