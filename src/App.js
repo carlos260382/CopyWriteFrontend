@@ -9,7 +9,8 @@ function App() {
   const [text, setText] = useState([]);
 
   const API_BASE_URL =
-    "http://localhost:3001/apihost/iecho/" || "http://localhost:5000";
+    "http://localhost:3001/apihost/iecho/" ||
+    "https://copywritebac.herokuapp.com/";
 
   const submitHandler = async () => {
     try {
