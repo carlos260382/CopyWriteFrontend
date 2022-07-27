@@ -1,36 +1,39 @@
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Axios from "axios";
+import LoadingBox from "./LoadingBox";
 import style from "./App.module.css";
 
 function App() {
   const [input, setInput] = useState("");
   const [text, setText] = useState([]);
 
-  // function saveText(text, data) {
-  //   return text.push(data);
-  // }
+  const API_BASE_URL =
+    "http://localhost:3001/apihost/iecho/" || "http://localhost:5000";
 
-  const submitHandler = async (e) => {
-    console.log("este es el input enviado", input);
+  const submitHandler = async () => {
     try {
-      const { data } = await Axios.get(
-        `http://localhost:3001/apihost/iecho/${input}`,
-        {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(input),
-        }
-      );
-      setText([...text, data]);
+      const { data } = await Axios.get(`${API_BASE_URL}${input}`, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(input),
+      });
+      if (data) setText(data);
       console.log("lo que llega del backend", data);
     } catch (error) {
       console.log("error de app", error);
     }
   };
-  console.log("el estado text", text);
+  const arrayText = [];
+
+  Object.keys(text).forEach((key) => {
+    const array = text[key];
+    arrayText.push(array);
+  });
+  console.log("la URL", API_BASE_URL);
+
   return (
     <div className={style.container}>
       <div className={style.input}>
@@ -43,6 +46,20 @@ function App() {
         <Button variant="contained" onClick={submitHandler}>
           Send
         </Button>
+      </div>
+
+      <div className={style.cards}>
+        <h3>Results</h3>
+
+        {!text ? (
+          <LoadingBox></LoadingBox>
+        ) : (
+          arrayText.map((t) => (
+            <li key={t._id}>
+              <div className={style.cardText}>{t.text}</div>
+            </li>
+          ))
+        )}
       </div>
     </div>
   );
